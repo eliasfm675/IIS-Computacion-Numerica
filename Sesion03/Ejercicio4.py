@@ -1,0 +1,49 @@
+import numpy as np
+import numpy.polynomial.polynomial as pol 
+np.set_printoptions(suppress = True)
+
+def horner(x0,p):
+    n=len(p)
+    q=np.zeros(n)
+    q[-1]=p[-1]
+    for i in range(n-2,-1,-1):
+        q[i]=p[i]+q[i+1]*x0
+    cociente=q[1:]
+    resto=q[0]
+    return cociente, resto
+def divisores(n):
+    n=np.abs(n)
+    div=[]
+    for i in range(1, n+1):
+        if n%i==0:
+            div.append(i)
+            div.append(-i)
+    return np.array(div)
+def raices(p):
+    n=len(p)
+    poli=np.copy(p)
+    div = divisores(p[0])
+    roots=[]
+    for i in range(len(div)):
+        c, r = horner(div[i], poli)
+        if r==0:
+            roots.append(div[i])
+            poli=c
+    return np.array(roots)
+    
+        
+p0 = np.array([-1,0,1])
+p1 = np.array([8, -6, -3, 1])
+p2 = np.array([15, -2, -16, 2, 1])
+p3 = np.array([60,53, -13, -5, 1])   
+p4 = np.array([490, 343, -206, -56, 4, 1])
+print("Raíces de p0")
+print(raices(p0))
+print("Raíces de p1")
+print(raices(p1))
+print("Raíces de p2")
+print(raices(p2))
+print("Raíces de p3")
+print(raices(p3))
+print("Raíces de p4")
+print(raices(p4))
